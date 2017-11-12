@@ -1,2 +1,2 @@
 @echo off
-java -jar build\libs\superMarketA-1.0-SNAPSHOT.jar %*
+java -jar build\libs\superMarketA-all-1.0.jar %*

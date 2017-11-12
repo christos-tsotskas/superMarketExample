@@ -30,7 +30,6 @@ public class Control {
 
         for (String item : requestedItems){
             if (allowedItems.contains(item.toUpperCase()) == false) {
-
                 throw new java.lang.RuntimeException("this is not quite as bad");
             }
         }

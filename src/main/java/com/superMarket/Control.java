@@ -29,6 +29,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Control perspective in Model-View-Control
+ */
 public class Control {
 
     List<String> allowedItems;

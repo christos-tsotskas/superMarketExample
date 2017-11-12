@@ -24,5 +24,8 @@
 
 package com.superMarket;
 
+/**
+ * Model perspective in Model-View-Control
+ */
 public class Model {
 }

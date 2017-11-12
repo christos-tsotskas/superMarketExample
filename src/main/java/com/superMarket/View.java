@@ -24,6 +24,9 @@
 
 package com.superMarket;
 
+/**
+ * View perspective in Model-View-Control
+ */
 public class View {
 
     public void report(){

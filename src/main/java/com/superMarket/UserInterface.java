@@ -27,6 +27,9 @@ package com.superMarket;
 import com.superMarket.View;
 import com.superMarket.Model;
 
+/**
+ * User Interface Class
+ */
 public class UserInterface {
     //TODO: add external configuration file for week of offer or not
 

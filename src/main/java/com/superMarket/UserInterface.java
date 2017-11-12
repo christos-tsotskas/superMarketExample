@@ -6,12 +6,16 @@ import com.superMarket.Model;
 public class UserInterface {
     //TODO: add external configuration file for week of offer or not
 
-    private View superMarketView;
+    private Control superMarketControl;
     private Model superMarketModel;
+    private View superMarketView;
 
     public UserInterface(String[] args){
-        superMarketView = new View();
+        superMarketControl = new Control(args);
+        superMarketControl.checkThatRequestedItemsExist();
+
         superMarketModel = new Model();
+        superMarketView = new View();
     }
 
 

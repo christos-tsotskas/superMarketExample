@@ -1,6 +1,9 @@
 package com.superMarket;
 
 import org.junit.Test;
+
+import java.lang.RuntimeException;
+
 import com.superMarket.UserInterface;
 
 import static org.junit.Assert.*;
@@ -41,5 +44,11 @@ public class UserInterfaceTest {
         assertEquals(expectedThirdLine, dummyUI.getDummyThirdLineWithAppleMilkBreadWithoutOffers());
     }
 
+    @Test(expected = RuntimeException.class)
+    public void verifyThatErrorMessageIsThrownIfTheUserRequestsItemsNonInTheList() {
+        String[] commandLineArguments = {"Pumkin"};
+
+        UserInterface.main(commandLineArguments);
+    }
 
 }

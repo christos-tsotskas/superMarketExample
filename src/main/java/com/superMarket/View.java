@@ -24,16 +24,46 @@
 
 package com.superMarket;
 
+import java.text.DecimalFormat;
+
 /**
  * View perspective in Model-View-Control
  */
 public class View {
 
-    public void report(){
+    static String GBP = "\u00A3";
+    String currency;
+    final DecimalFormat doubleNumberFormatter = new DecimalFormat("#0.00");
 
-        System.out.println("Subtotal:"); // £3.10
-//        Apples 10% off: -10p
-        System.out.println("Total"); // £3.00
+    public View(String currency){
+        if (currency.toUpperCase().equals("GBP")) {
+            this.currency = GBP;
+        }
 
+    }
+
+//TODO: format the output (p if the value is less than 1.00)
+
+
+    public String getFirstLine(double subtotalCost) {
+        return  "Subtotal: " + this.currency + doubleNumberFormatter.format(subtotalCost);
+    }
+
+
+    public String getSecondLine() {
+        String noOffersText = "(no offers available)";
+        String output = noOffersText;
+
+        return output;
+    }
+
+    public String getThirdLine(double totalCost) {
+        return  "Total: " + this.currency + doubleNumberFormatter.format(totalCost);
+    }
+
+    public void reportAll(Model superMarketModel){
+        System.out.println( getFirstLine(superMarketModel.getTotalCostOfRequestedItemsWithoutDiscount()) );
+        System.out.println( getSecondLine() );
+        System.out.println( getThirdLine(superMarketModel.getTotalCostOfRequestedItemsWithoutDiscount()) );
     }
 }

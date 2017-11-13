@@ -66,10 +66,12 @@ For instance,
         - support other forms of input (e.g., JSON files)
         - implement a REST API
         - implement as multi-threading
+        - display messages in a logger (instead of the screen)
     - Testing
         - link to automated test server
         - set up automated DevOps environment (with Auto-QA, QA, Staging, Production)
         - after successful testing, deploy jar on an artifact server
+        - performance tests
     - Deployment
         - notification of new services to subscribed users
         - hash, for versioning

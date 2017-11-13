@@ -24,8 +24,8 @@
 
 package com.superMarket;
 
-import com.superMarket.View;
-import com.superMarket.Model;
+import java.util.List;
+import java.util.Map;
 
 /**
  * User Interface Class
@@ -37,61 +37,118 @@ public class UserInterface {
     private Model superMarketModel;
     private View superMarketView;
 
-    public UserInterface(String[] args){
+    private List<String> validRequestedItems;
+
+    /**
+     * Constructor
+     *
+     * @param args command line items
+     * @throws RuntimeException  if the requested items are not provided by the supermarket
+     */
+    public UserInterface(String[] args) throws RuntimeException{
         superMarketControl = new Control(args);
-        superMarketControl.checkThatRequestedItemsExist();
 
-        superMarketModel = new Model();
-        superMarketView = new View();
+            superMarketControl.checkThatRequestedItemsExist();
+
+
+        validRequestedItems = superMarketControl.getRequestedItems();
+
+        superMarketModel = new Model(validRequestedItems);
+
+        superMarketView = new View("GBP");
+        superMarketView.reportAll(superMarketModel);
     }
 
 
+    /**
+     * Main method
+     *
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
-
-        UserInterface U1 = new UserInterface(args);
-
-        U1.superMarketView.report();
+        try {
+            UserInterface U1 = new UserInterface(args);
+        } catch (Exception ex) {
+            System.out.println("Exception Message: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
+    /**
+     * Generate the subtotal of the order
+     *
+     * @return literal of the subtotal of the order
+     */
     public String getFirstLine() {
-
-        return "";
+        return superMarketView.getFirstLine(superMarketModel.getTotalCostOfRequestedItemsWithoutDiscount());
     }
 
+
+    /**
+     * Helper method for the integration tests
+     *
+     * @return hard-coded literal of the subtotal of the order
+     */
     public String getDummyFirstLineWithAppleMilkBread() {
-
-        return "Subtotal: £3.10";
+        String GBP_symbol = "\u00A3";
+        return "Subtotal: " + GBP_symbol + "3.10";
     }
 
 
+    /**
+     * Generate additional information messages
+     *
+     * @return information literal to explain any discount
+     */
     public String getSecondLine() {
-
-        return "";
+        return superMarketView.getSecondLine();
     }
 
+    /**
+     * Helper method for the integration tests
+     *
+     * @return hard-coded literal to demonstrate discount message
+     */
     public String getDummySecondLineWithAppleMilkBreadWithOffers() {
-
         return "Apples 10% off: -10p";
     }
 
+    /**
+     * Helper method for the integration tests
+     *
+     * @return hard-coded literal for no-offers
+     */
     public String getDummySecondLineWithAppleMilkBreadWithoutOffers() {
-
         return "(no offers available)";
     }
 
+    /**
+     * Generate the total of the order
+     *
+     * @return literal of the total of the order
+     */
     public String getThirdLine() {
-
-        return "";
+        return superMarketView.getThirdLine(superMarketModel.getTotalCostOfRequestedItemsWithoutDiscount());
     }
 
+    /**
+     * Helper method for the integration tests
+     *
+     * @return hard-coded literal of the total of the order
+     */
     public String getDummyThirdLineWithAppleMilkBreadWithOffers() {
-
-        return "Total: £3.00";
+        String GBP_symbol = "\u00A3";
+        return "Total: " + GBP_symbol + "3.00";
     }
 
+    /**
+     * Helper method for the integration tests
+     *
+     * @return hard-coded literal of the total of the order
+     */
     public String getDummyThirdLineWithAppleMilkBreadWithoutOffers() {
-
-        return "Total: £3.10";
+        String GBP_symbol = "\u00A3";
+        return "Total: " + GBP_symbol + "3.10";
     }
 
 }

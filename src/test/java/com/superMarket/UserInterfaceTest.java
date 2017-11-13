@@ -24,11 +24,13 @@
 
 package com.superMarket;
 
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.lang.RuntimeException;
 
 import com.superMarket.UserInterface;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
@@ -37,6 +39,10 @@ import static org.junit.Assert.*;
  */
 public class UserInterfaceTest {
 
+    static String GBP_symbol = "\u00A3";
+
+
+
     /**
      * verify Output On A Period Of Offer With Dummy Values
      */
@@ -44,26 +50,28 @@ public class UserInterfaceTest {
     public void verifyOutputOnAPeriodOfOfferWithDummyValues() {
         String[] commandLineArguments = {"Apples", "Milk", "Bread"};
 
-        String expectedFirstLine = "Subtotal: £3.10";
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"3.10";
         String expectedSecondLine = "Apples 10% off: -10p";
-        String expectedThirdLine = "Total: £3.00";
+        String expectedThirdLine = "Total: "+GBP_symbol+"3.00";
 
         UserInterface.main(commandLineArguments);
 
         UserInterface dummyUI = new UserInterface(commandLineArguments);
-
         assertEquals(expectedFirstLine, dummyUI.getDummyFirstLineWithAppleMilkBread());
         assertEquals(expectedSecondLine, dummyUI.getDummySecondLineWithAppleMilkBreadWithOffers());
         assertEquals(expectedThirdLine, dummyUI.getDummyThirdLineWithAppleMilkBreadWithOffers());
+
+
+
     }
 
     @Test
     public void verifyOutputWithoutAnyOffersWithDummyValues() {
         String[] commandLineArguments = {"Apples", "Milk", "Bread"};
 
-        String expectedFirstLine = "Subtotal: £3.10";
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"3.10";
         String expectedSecondLine = "(no offers available)";
-        String expectedThirdLine = "Total: £3.10";
+        String expectedThirdLine = "Total: "+GBP_symbol+"3.10";
 
         UserInterface.main(commandLineArguments);
 
@@ -78,9 +86,9 @@ public class UserInterfaceTest {
     public void verifyOutputWithoutAnyOffersWithDummyValuesByProvidingMalformedInput() {
         String[] commandLineArguments = {"AppLES", "MiLk", "BRead"};
 
-        String expectedFirstLine = "Subtotal: £3.10";
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"3.10";
         String expectedSecondLine = "(no offers available)";
-        String expectedThirdLine = "Total: £3.10";
+        String expectedThirdLine = "Total: "+GBP_symbol+"3.10";
 
         UserInterface.main(commandLineArguments);
 
@@ -91,20 +99,31 @@ public class UserInterfaceTest {
         assertEquals(expectedThirdLine, dummyUI.getDummyThirdLineWithAppleMilkBreadWithoutOffers());
     }
 
-    @Test(expected = RuntimeException.class)
-    public void verifyThatErrorMessageIsThrownIfTheUserRequestsItemsNonInTheList() {
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void verifyThatErrorMessageIsThrownIfTheUserRequestsItemsNonInTheList(){
         String[] commandLineArguments = {"Pumkin"};
 
-        UserInterface.main(commandLineArguments);
+        try {
+        thrown.expect(RuntimeException.class);
+        thrown.expectMessage("The item(s) is/are not available!");
+            UserInterface.main(commandLineArguments);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
     public void testPurchasingOneLoafOfBread() {
         String[] commandLineArguments = {"Bread"};
 
-        String expectedFirstLine = "Subtotal: £0.80";
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"0.80";
         String expectedSecondLine = "(no offers available)";
-        String expectedThirdLine = "Total: £0.80";
+        String expectedThirdLine = "Total: "+GBP_symbol+"0.80";
 
         UserInterface.main(commandLineArguments);
 
@@ -119,9 +138,43 @@ public class UserInterfaceTest {
     public void testPurchasingOneBottleOfMilk() {
         String[] commandLineArguments = {"Milk"};
 
-        String expectedFirstLine = "Subtotal: £1.30";
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"1.30";
         String expectedSecondLine = "(no offers available)";
-        String expectedThirdLine = "Total: £1.30";
+        String expectedThirdLine = "Total: "+GBP_symbol+"1.30";
+
+        UserInterface.main(commandLineArguments);
+
+        UserInterface dummyUI = new UserInterface(commandLineArguments);
+
+        assertEquals(expectedFirstLine, dummyUI.getFirstLine());
+        assertEquals(expectedSecondLine, dummyUI.getSecondLine());
+        assertEquals(expectedThirdLine, dummyUI.getThirdLine());
+    }
+
+    @Test
+    public void testPurchasingTwoBottlesOfMilk() {
+        String[] commandLineArguments = {"Milk", "Milk"};
+
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"2.60";
+        String expectedSecondLine = "(no offers available)";
+        String expectedThirdLine = "Total: "+GBP_symbol+"2.60";
+
+        UserInterface.main(commandLineArguments);
+
+        UserInterface dummyUI = new UserInterface(commandLineArguments);
+
+        assertEquals(expectedFirstLine, dummyUI.getFirstLine());
+        assertEquals(expectedSecondLine, dummyUI.getSecondLine());
+        assertEquals(expectedThirdLine, dummyUI.getThirdLine());
+    }
+
+    @Test
+    public void testPurchasingOneBottlesOfMilkAndOneLoafOfBread() {
+        String[] commandLineArguments = {"Milk", "Bread"};
+
+        String expectedFirstLine = "Subtotal: "+GBP_symbol+"2.10";
+        String expectedSecondLine = "(no offers available)";
+        String expectedThirdLine = "Total: "+GBP_symbol+"2.10";
 
         UserInterface.main(commandLineArguments);
 

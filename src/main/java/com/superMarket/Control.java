@@ -27,38 +27,70 @@ package com.superMarket;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Control perspective in Model-View-Control
  */
 public class Control {
 
+    /**
+     * @param allowedItems available items provided by the supermarket
+     */
     List<String> allowedItems;
+
+    /**
+     * @param requestedItems items requested by the user (via the command line)
+     */
     String[] requestedItems;
 
-    private List<String> convertArrayOfSTringsToCapital(String[] inputArrayOfStrings){
-       List<String> capitalisedArrayOfStrings = new ArrayList<String>();
+    /**
+     * Convert an array of strings in capitals
+     *
+     * @param inputArrayOfStrings list of literals to convert to capital
+     * @return list of strings in capitals
+     */
+    private List<String> convertArrayOfStringsToCapital(String[] inputArrayOfStrings) {
+        List<String> capitalisedArrayOfStrings = new ArrayList<String>();
 
-        for(String item : Arrays.asList(inputArrayOfStrings) ){
+        for (String item : Arrays.asList(inputArrayOfStrings)) {
             capitalisedArrayOfStrings.add(item.toUpperCase());
         }
 
         return capitalisedArrayOfStrings;
     }
 
-    public Control(String[] itemsToCheck){
+    /**
+     * Constructor
+     *
+     * @param itemsToCheck array of strings to check
+     */
+    public Control(String[] itemsToCheck) {
         String[] good = {"Apples", "Milk", "Bread", "Soup"};
-        allowedItems = convertArrayOfSTringsToCapital(good);
+        allowedItems = convertArrayOfStringsToCapital(good);
         requestedItems = itemsToCheck;
     }
 
-    public void checkThatRequestedItemsExist(){
 
-        for (String item : requestedItems){
+    /**
+     * Checks that the requested items exist in the list, otherwise raises an exception
+     *
+     * @throws RuntimeException if the requested items are not provided by the supermarket
+     */
+    public void checkThatRequestedItemsExist() throws RuntimeException {
+
+        for (String item : requestedItems) {
             if (allowedItems.contains(item.toUpperCase()) == false) {
-                throw new java.lang.RuntimeException("this is not quite as bad");
+                throw new java.lang.RuntimeException("The item(s) is/are not available!");
             }
         }
+    }
+
+    /**
+     * Get the requested items
+     *
+     * @return list of strings that describe the requested items
+     */
+    public List<String> getRequestedItems() {
+        return Arrays.asList(requestedItems);
     }
 }
